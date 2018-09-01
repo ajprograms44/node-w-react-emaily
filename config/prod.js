@@ -9,5 +9,3 @@ module.exports = {
 
 //Here we are specifying the keys we are using in our app as the environment variables 
 //that we will create in Heroku
-
-

@@ -41,17 +41,20 @@ passport.use(
     callbackURL: '/auth/google/callback',
     proxy: true
     }, 
-  (accessToken, refreshToken, profile, done) => {
-    User.findOne({googleId: profile.id})
-    .then((existingUser) => {
+
+
+
+  async (accessToken, refreshToken, profile, done) => {
+    const existingUser = await User.findOne({googleId: profile.id})
+  
       if(existingUser){
-        done(null,existingUser);
-      } else {
-        new User({ googleId: profile.id })
-        .save()
-        .then(user => done(null,user));
+        return done(null,existingUser);
       }
-    })
+      
+      const user = await new User({ googleId: profile.id }).save()
+      done(null,user);
+      
+    
     //This User.findOne() function takes in an object of whatever unique
     //id we want to use to find unique users
     //We use an if then statement in order to check if an existingUser exists or not
